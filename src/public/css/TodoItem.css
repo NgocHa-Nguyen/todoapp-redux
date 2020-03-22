@@ -1,0 +1,44 @@
+.todo-item {
+    font-family: "Arial, Helvetica, sans-serif, Helvetica Neue";
+    font-weight: 300;
+    font-size: 24px;
+    color: #4d4d4d;
+    padding: 10px 5px;
+    display: flex;
+    border: 1px solid #eee;
+    display: flex;
+  }
+  .todo-item-Completed {
+    font-family: "Arial, Helvetica, sans-serif, Helvetica Neue";
+    font-weight: 300;
+    font-size: 24px;
+    color: #4d4d4d;
+    padding: 10px 5px;
+    display: flex;
+    border: 1px solid #eee;
+    display: flex;
+    text-decoration: line-through;
+    opacity: 0.3;
+  }
+  .todo-item-UnComplete {
+    text-decoration: dashed;
+    opacity: 0.3;
+  }
+  .check-logo {
+    width: 32px;
+    margin: 10px 5px;
+    display: flex;
+  }
+  .todo-item > p {
+    margin: 0;
+  }
+  .img-btn {
+    width: 32px;
+   
+  }
+  .btn-delete {
+    width: 40px;
+  }
+  .btn-edit {
+      width: 40px;
+  }
