@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 class AddItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = { 
           modal: false,
           title: "", 
           description: "" 
@@ -26,7 +26,6 @@ class AddItem extends Component {
       };
     
       submit() {
-        //<-- this.props.handleInput(this.state.title, this.state.description);-->
         this.props.actionAddItem(this.state.title, this.state.description);
         this.toggle();
       }

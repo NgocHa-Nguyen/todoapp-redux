@@ -2,6 +2,7 @@ import items from "./TodoReducer";
 import { combineReducers } from "redux";
 
 const myReducer =  combineReducers({
-    items
+    items,
+    
 });
 export default myReducer;

@@ -1,91 +1,120 @@
-import React, { Component } from 'react';
-import '../public/css/TodoItem.css';
+import React, { Component } from "react";
+import "../public/css/TodoItem.css";
 import { connect } from "react-redux";
 import btnDetele from "../public/images/delete.png";
-import btnEdit from "../public/images/edit.png";
 import { completeItem, deleteItem } from "../actions/TodoAction";
-import EditItem from './EditItem';
-
+import EditItem from "./EditItem"
 class TodoItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: this.props.items
+      items: this.props.items,
+      value: "all"
     };
-    this.completeItem = this.completeItem.bind(this);
+    this.onCompleteItem = this.onCompleteItem.bind(this);
     this.onDeleteItem = this.onDeleteItem.bind(this);
-    //this.handleChange = this.handleChange.bind(this);
-  };
-  //<--filter-->
-  // handleChange(event) {
-  //   let val = event.target.value;
-  //   const { items } = this.state;
-  //   let filterTodo = items.map(item => {
-  //     if (val === 'true' || val === "false")
-  //       return item.isCompleted === JSON.parse(val.toLowerCase())
-  //     else
-  //       return item
-  //   })
-  //   this.setState({
-  //     items: filterTodo
-  //   })
-  // }
-  //<--Action Store-->
+    this.handleChange = this.handleChange.bind(this);
+  }
   onDeleteItem(id) {
     this.props.actionDeleteItem(id);
   }
-  completeItem(id) {
-    this.props.actionCompleteItem(id);
+  onCompleteItem(id, item) {
+    const boolean = item.isCompleted ? true : false;
+    this.props.actionCompleteItem(id, boolean);
   }
-    // onDeleteItem(id) {
-    //   const {items} = this.state;
-    //   let deleteItem = items.filter(item => item.id !== id)
-    // }
-    // completeItem(id) {
-    //   const {items} = this.state;
-
-    //   let isCompletedItem = items.map(item =>
-    //     item.id === id ?
-    //       { ...item, isComplete: !item.isComplete } :
-    //       item
-    //   )
-    //   this.setState({
-    //     items: isCompletedItem
-    //   })
-    // }
-  render() {
+  handleChange() {
     const { items } = this.props;
+    const { value } = this.state;
+    if (value === "all") {
+      return items.listActive.concat(items.listDone).map((item, key) => (
+        <div className="row">
+          <div className="col-md-8">
+            <p
+              className="todo-item"
+              onClick={() => this.onCompleteItem(item.id, item)}
+              className={item.isCompleted ? "todo-item-Completed" : "todo-item"}
+            >
+              {item.title}
+            </p>
+          </div>
+          <div className="col-md-2">
+            <img
+              src={btnDetele}
+              alt="btn-delete"
+              className="img-btn btn-delete"
+              onClick={() => this.onDeleteItem(item.id)}
+            ></img>
+          </div>
+          <div className="btn-item col-md-2">{<EditItem></EditItem> }</div>
+        </div>
+      ));
+    }
+    if (value === "true") {
+      return items.listDone.map((item, key) => (
+        <div className="row">
+          <div className="col-md-8">
+            <p
+              className="todo-item"
+              onClick={() => this.onCompleteItem(item.id, item)}
+              className={item.isCompleted ? "todo-item-Completed" : "todo-item"}
+            >
+              {item.title}
+            </p>
+          </div>
+          <div className="col-md-2">
+            <img
+              src={btnDetele}
+              alt="btn-delete"
+              className="img-btn btn-delete"
+              onClick={() => this.onDeleteItem(item.id)}
+            ></img>
+          </div>
+          <div className="btn-item col-md-2"><EditItem></EditItem></div>
+        </div>
+      ));
+    }
+    if (value === "false") {
+      return items.listActive.map((item, key) => (
+        <div className="row">
+          <div className="col-md-8">
+            <p
+              className="todo-item"
+              onClick={() => this.onCompleteItem(item.id, item)}
+              className={item.isCompleted ? "todo-item-Completed" : "todo-item"}
+            >
+              {item.title}
+            </p>
+          </div>
+          <div className="col-md-2">
+            <img
+              src={btnDetele}
+              alt="btn-delete"
+              className="img-btn btn-delete "
+              onClick={() => this.onDeleteItem(item.id)}
+            ></img>
+          </div>
+          <div className="btn-item col-md-2">{ <EditItem></EditItem> }</div>
+        </div>
+      ));
+    }
+  }
+
+  render() {
     return (
       <div className="row">
         <div className="col-6 col-md-1 "></div>
         <div className="col-6 col-md-11 ">
-        {/* </div><select id="todo" value={this.state.isComplete} onChange={this.handleChange}> */}
-          {/* <select id="todo" value={this.state.isComplete} onChange={this.handleChange}>
-            <option value="all">All</option>
-            <option value="true">true</option>
-            <option value="false">false</option>
-          </select> */}
-          {items.map((item, key) => (
-            <div className="row">
-              <div className="col-md-2">
-                <p className="todo-item" onClick={() => this.completeItem(key)}
-                  className={item.isCompleted ? "todo-item-Completed" : "todo-item"}>
-                  {item.title}
-                </p>
-              </div>
-              <div className="col-md-6">
-                <img
-                  src={btnDetele}
-                  alt="btn-delete"
-                  className="img-btn btn-delete"
-                  onClick={() => this.onDeleteItem(key)}
-                ></img>
-              </div>
-              <div className="btn-item col-md-2">
-                <EditItem></EditItem>
-              </div>
-            </div>
-          ))}
+          <div>
+            <select
+              id="todo"
+              onChange={event => this.setState({ value: event.target.value })}
+            >
+              <option value="all">All</option>
+              <option value="true">List Done</option>
+              <option value="false">List Active</option>
+            </select>
+          </div>
+          {this.handleChange()}
         </div>
       </div>
     );
@@ -98,14 +127,13 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    actionCompleteItem: id => {
-      dispatch(completeItem(id));
+    actionCompleteItem: (id, boolean) => {
+      dispatch(completeItem(id, boolean));
     },
     actionDeleteItem: id => {
       dispatch(deleteItem(id));
-    },
+    }
   };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoItem);
